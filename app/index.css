@@ -1,0 +1,80 @@
+body {
+    background: antiquewhite;
+}
+
+#app {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid;
+    background-color: white;
+}
+
+.container {
+    padding: 5px;
+    font-family: sans-serif;
+}
+
+.calendar-month-year {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.calendar-month-year > * {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.calendar-items{
+    padding: 15px;
+    display: inline-block;
+    text-align: center;
+    font-family: sans-serif;
+    cursor: pointer;
+    height: 18px;
+    width: 18px;
+}
+
+.month-items {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 15px;
+}
+
+.year-items {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin: 15px;
+}
+
+.days > .calendar-items:hover, .month-items:hover, .year-items:hover {
+    border-radius: 35px;
+    background-color: #db3d44;
+    color: white;
+}
+
+.day-text {
+    font-weight: bold;
+}
+
+.calendar-today {
+    color: #db3d44
+}
+
+.calendar-exclude-day {
+    color: #eeeeee
+}
+
+.year-items:nth-child(2), .year-items:nth-child(15) {
+    color: #eeeeee
+}
+
+.selected-day {
+    border-radius: 35px;
+    background-color: #db3d44;
+    color: white;
+}
