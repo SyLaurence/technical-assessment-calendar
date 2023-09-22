@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
+import { CalendarContent } from './CalendarContent'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { selectedDateState, showCalendarState } from '../../../atoms/atoms'
 
 /**
  * Constant for displaying a total of 42 items/days in the Calendar
@@ -16,54 +19,58 @@ const dayTexts = [ 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa' ]
 
 /**
  * Component for handling the Day View functionality of the Calendar Component
- * @param { string } selectedDate is used to define the selected date from the Calendar
- * @param { callback } setSelectedDate is used to set the seelcted date from the Calendar
- * @param { callback } setCalendarView is used to toggle the view to Month View
  * 
  */
-export default function Day ({ selectedDate, setSelectedDate, setCalendarView }) {
+export const Day = () => {
+
+    // Selected date value and setters from Recoil State
+    const [ selectedDate, setSelectedDate ] = useRecoilState(selectedDateState)
+    const setShowCalendar = useSetRecoilState(showCalendarState)
     
-    /**
-     * State for handling the days to be displayed in the Calendar
-     */
+    // State for handling the days to be displayed in the Calendar
     const [ calendarDays, setCalendarDays ] = useState([])
     
-    /**
-     * Variables for getting the year and month of the selected date
-     */
+    // Variables for getting the year, month, and day of the selected date
     let year = selectedDate.getFullYear()
     let month = selectedDate.getMonth()
+    let day = selectedDate.getDate()
     
     /**
      * Hook for repopulating the Calendar days when a new date is selected
      * When month and year is changed
      */
     useEffect(() => {
-        setCalendarDays(populateDays(year, month))
-    }, [selectedDate])
+        setCalendarDays(populateDays(year, month, selectedDate.getDate()))
+    }, [month, day])
+
+    // Adds a class to the Day clicked from the Calendar
+    const handleDayClick = (day, className) => {
+        if (className.includes('exclude')) return;
+
+        // Set Selected Day
+        setSelectedDate(new Date(year, month, day))
+
+        // Hide Calendar
+        setShowCalendar(false)
+    }
 
     return (
         <>
             { /* Days of the Week */ }
             <div className="day-text">{ dayTexts.map( dayText => <span className="calendar-items" key={ dayText } > { dayText } </span> ) }</div>
-            
+
             { /* Calendar Days */ }
             <div className="days"> 
-                { /* Calendar Month - Year and < > Buttons */ }
-                <div className="calendar-month-year">
-                    <div onClick={ () => setSelectedDate(new Date(year, month - 1))}> { '<' } </div>
-                    <div onClick={ () => setCalendarView('month') }>{ `${selectedDate.toLocaleString('default', { month: 'long' })} ${year}` }</div>
-                    <div onClick={ () => setSelectedDate(new Date(year, month + 1)) }> { '>' } </div>
-                </div>
-                { /* Render Calendar days */ }
-                { calendarDays.map( (dayObj, index) => {
-                    return (
-                        <>
-                            { (index !== 0 && index % 7 === 0) && <br key={ dayObj.day + index } /> }
-                            <span key={ index } className={ dayObj.class + ' calendar-items'} onClick={ (e) => handleDayClick(e, dayObj) }> { dayObj.day } </span>
-                        </>
-                    )
-                } ) }
+                <CalendarContent
+                    data={ calendarDays }
+                    columns={ 7 }
+                    calendarLabel={ `${selectedDate.toLocaleString('default', { month: 'long' })} ${year}` }
+                    calendarView={ 'month' }
+                    styles={ 'calendar-items' }
+                    handleClick={ handleDayClick }
+                    prevDate={ new Date(year, month - 1) }
+                    nextDate={ new Date(year, month + 1) }
+                />
             </div>
         </>
     )
@@ -76,27 +83,19 @@ export default function Day ({ selectedDate, setSelectedDate, setCalendarView })
  * @param {number} month is the selected month from the Calendar
  * @returns {array}
  */
-function populateDays(year, month) {
+function populateDays(year, month, clickedDay = 0) {
     
-    /**
-     * Variable for getting the numerical order of the day of the current selected 
-     */
+    // Variable for getting the numerical order of the day of the current selected 
     let pastMonthDaysCount = new Date(year, month, 1).getDay()
 
-    /**
-     * Variable for getting the number of days from the previous month
-     */
+    // Variable for getting the number of days from the previous month
     let pastMonthDays = new Date(year, month, 0).getDate()
 
-    /**
-     * Variable for getting the total number of days in the selected month
-     */
+    // Variable for getting the total number of days in the selected month
     let daysInMonth = new Date(year, month + 1, 0).getDate()
     
-    /**
-     * Populate initial array with total days of the current month
-     */
-    let calendarDays = [ ...Array(daysInMonth).keys() ].map((item) => ({ 'day': item + 1, class: ( isCurrentDate(year, month, item + 1) ? 'calendar-today' : '' )}))
+    // Populate initial array with total days of the current month
+    let calendarDays = [ ...Array(daysInMonth).keys() ].map((item) => ({ text: item + 1, class: addDayClasses(year, month, item + 1, clickedDay) }))
 
     /**
      * Loop through the number of days from the previous month
@@ -108,7 +107,7 @@ function populateDays(year, month) {
      */
     for (let i = pastMonthDaysCount; i > 0; i--) {
         // insert new days from the beginning of the array
-        calendarDays.unshift({ day: pastMonthDays--, class: 'calendar-exclude-day'})
+        calendarDays.unshift({ text: pastMonthDays--, class: 'calendar-exclude-day'})
     }
     
     /**
@@ -116,7 +115,7 @@ function populateDays(year, month) {
      */
     let num = 1;
     while (calendarDays.length < displayDayCount) {
-        calendarDays.push({ day: num++, class: 'calendar-exclude-day'})
+        calendarDays.push({ text: num++, class: 'calendar-exclude-day'})
     }
 
     return calendarDays;
@@ -133,28 +132,30 @@ function populateDays(year, month) {
  */
 function isCurrentDate(year, month, day) {
     
-    /**
-     * Contants for getting the current date today
-     */
+    // Contants for getting the current date today
     const currentDay = new Date().getDate()
     const currentMonth = new Date().getMonth()
     const currentYear = new Date().getFullYear()
     
-    /**
-     * Evaluates if the date passed is the date today
-     */
+    // Evaluates if the date passed is the date today
     return (day === currentDay 
     && month === currentMonth
     && year === currentYear)
 }
 
 /**
- * Handler when a Day from the Calendar is clicked
+ * Function for adding classes to days in the calendar
  * 
- * @param {*} event 
- * @param {*} dayObj 
+ * @param {number} year is the current selected year
+ * @param {number} month is the current selected month
+ * @param {number} day is the current selected date
+ * @param {number} clickedDay is the Day clicked inside the calendar
+ * @returns {string} Classes for the Calendar day item
  */
-function handleDayClick(event, dayObj) {
-    console.log(dayObj)
-    dayObj.class = 'selected-day'
+function addDayClasses(year, month, day, clickedDay) {
+    return (
+        isCurrentDate(year, month, day) ? 'calendar-today' : ''
+    ) + (
+        day === clickedDay ? ' selected' : ''
+    )
 }

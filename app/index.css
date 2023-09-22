@@ -4,10 +4,11 @@ body {
 
 #app {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid;
+}
+
+
+#calendar {
+    border: 1px solid #939393;
     background-color: white;
 }
 
@@ -20,6 +21,18 @@ body {
     padding: 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-header {
+    width: 200px;
+    padding: 10px;
+    text-align: center;
+}
+
+.calendar-header:hover {
+    background-color: #e9e9e9;
+    border-radius: 5px;
 }
 
 .calendar-month-year > * {
@@ -32,7 +45,6 @@ body {
     display: inline-block;
     text-align: center;
     font-family: sans-serif;
-    cursor: pointer;
     height: 18px;
     width: 18px;
 }
@@ -42,6 +54,7 @@ body {
     height: 30px;
     line-height: 30px;
     margin: 15px;
+    cursor: pointer;
 }
 
 .year-items {
@@ -49,12 +62,19 @@ body {
     height: 35px;
     line-height: 35px;
     margin: 15px;
+    cursor: pointer;
 }
 
-.days > .calendar-items:hover, .month-items:hover, .year-items:hover {
+.days > .calendar-items:hover, 
+.month-items:hover, 
+.year-items:hover {
     border-radius: 35px;
     background-color: #db3d44;
     color: white;
+}
+
+.days > .calendar-items {
+    cursor: pointer;
 }
 
 .day-text {
@@ -69,12 +89,53 @@ body {
     color: #eeeeee
 }
 
-.year-items:nth-child(2), .year-items:nth-child(15) {
+.year-items:nth-child(2), 
+.year-items:nth-child(15) {
     color: #eeeeee
 }
 
-.selected-day {
+.selected {
     border-radius: 35px;
     background-color: #db3d44;
     color: white;
+}
+
+.dp-input {
+    border:none;
+    outline:none;
+    padding: 5px 0;
+}
+
+.dp-div {
+    border:solid 2px #939393;
+    padding: 10px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 5px;
+    width: 100px;
+}
+
+.dp-year {
+    width: 30px;
+}
+
+.dp-month, .dp-day {
+    width: 15px;
+}
+
+.dp-label-active {
+    border-color: #9FCFF8;
+    border-width: 2px;
+}
+
+.dp-icon {
+    width: 16px;
+    margin-right: 9px;
+    position: relative;
+    top: 2px;
+    cursor: pointer;
+}
+
+.dp-separator {
+    width: 5px;
 }
