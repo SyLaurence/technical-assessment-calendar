@@ -2,7 +2,7 @@
 
 ## Activity: Make a Calendar Component from scratch
 
-### Installation guide
+### :rocket: Installation guide
 
 1. On your local machine, create a new folder "Technical Assessment - Calendar"
 2. Go to the New Folder and open CMD.
@@ -78,7 +78,7 @@
 - Advanced validation: only accept numeric values on DatePicker.
 - No year limit.
 
-### API Reference
+### :zap: API Reference
 
 - #### DatePicker Component
   - | Name                | Type                   | Default    | Description                                                                                              |
@@ -154,7 +154,7 @@
     | handleYearClick  | function               |            | Sets the new selected year                                                   |
     | getBaseYear      | function(year: number) |            | Calculates the base value of the current selected year by 1000s / 100s / 10s |
 
-### Tech Stack
+### :wrench: Tech Stack
 
 - React
 - Recoil
