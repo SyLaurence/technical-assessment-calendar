@@ -4,7 +4,7 @@
 
 ### :rocket: Installation guide
 
-Node: Make sure [node](https://nodejs.org/en/download) is installed on your machine!
+Note: Make sure [node](https://nodejs.org/en/download) is installed on your machine!
 
 1. On your local machine, create a new folder "Technical Assessment - Calendar"
 2. Go to the New Folder and open CMD.
