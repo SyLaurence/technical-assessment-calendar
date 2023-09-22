@@ -8,19 +8,19 @@
 2. Go to the New Folder and open CMD.
 3. Clone repository by entering this command in CMD:
    ```
-   > git clone https://github.com/SyLaurence/technical-assessment-calendar.git
+   git clone https://github.com/SyLaurence/technical-assessment-calendar.git
    ```
 4. Go to the Project folder.
    ```
-   > cd technical-assessment-calendar
+   cd technical-assessment-calendar
    ```
 5. Install dependencies by:
    ```
-    > npm install
+   npm install
    ```
 6. Setup Dev server (for technical assessment only)
    ```
-   > npm run dev
+   npm run dev
    ```
 7. Open a browser and go to: [http://localhost:8080/](http://localhost:8080/)
 
@@ -72,11 +72,11 @@
 
 ### :warning: Features not included
 
-- Mobile Responsive Layout
-- Click on previous days / years to navigate
-- Clicking outside the DatePicker and Calendar will hide the Calendar
-- Advanced validation: only accept numeric values on DatePicker
-- No year limit
+- Mobile Responsive Layout.
+- Click on previous days / years to navigate.
+- Clicking outside the DatePicker and Calendar will hide the Calendar.
+- Advanced validation: only accept numeric values on DatePicker.
+- No year limit.
 
 ### API Reference
 
