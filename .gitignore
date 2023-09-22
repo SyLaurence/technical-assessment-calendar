@@ -1,4 +1,4 @@
 node_modules
-app/assets/*
+app/assets/trend-micro-logo.png
 package-lock.json
 dist
